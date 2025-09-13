@@ -93,6 +93,7 @@ workflow:
         - allowed_file_extensions: []
           allowed_file_types:
           - image
+          - document
           allowed_file_upload_methods:
           - local_file
           label: ファイル
@@ -109,7 +110,7 @@ workflow:
       positionAbsolute:
         x: 80
         y: 282
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -130,41 +131,41 @@ workflow:
         - id: d3fa576f-7938-4e95-b892-0347f25a260e
           role: system
           text: 請求書の内容を抽出してください
-        selected: true
+        selected: false
         structured_output:
           schema:
             properties:
-              invoiceDateTime:
-                format: date-time
+              date:
+                format: date
                 type: string
-              lineItems:
+              items:
                 items:
                   properties:
-                    itemName:
+                    description:
                       type: string
-                    itemTotal:
-                      minimum: 0
-                      type: number
                     quantity:
-                      minimum: 0
-                      type: number
+                      minimum: 1
+                      type: integer
                     unitPrice:
                       minimum: 0
                       type: number
                   required:
-                  - itemName
-                  - unitPrice
+                  - description
                   - quantity
-                  - itemTotal
+                  - unitPrice
                   type: object
+                minItems: 0
                 type: array
               totalAmount:
                 minimum: 0
                 type: number
+              vendor:
+                type: string
             required:
-            - invoiceDateTime
+            - date
             - totalAmount
-            - lineItems
+            - vendor
+            - items
             type: object
         structured_output_enabled: true
         title: LLM
@@ -185,7 +186,7 @@ workflow:
       positionAbsolute:
         x: 408
         y: 282
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -215,6 +216,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: 110.93926558365177
-      y: 107.32405498194487
+      x: 4.820459233080783
+      y: 183.68034137554992
       zoom: 0.7578582832551991
