@@ -1,0 +1,220 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 請求書内容抽出
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: package
+  value:
+    plugin_unique_identifier: langgenius/gemini:0.2.6@2a4ffc697957afb7734e7a5cfb780d5c819d216cc6e56798bffb95d28a032867
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1757724756768-source-1757724797760-target
+      source: '1757724756768'
+      sourceHandle: source
+      target: '1757724797760'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1757724797760-source-1757724966912-target
+      source: '1757724797760'
+      sourceHandle: source
+      target: '1757724966912'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 開始
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          label: ファイル
+          max_length: 48
+          options: []
+          required: true
+          type: file
+          variable: file
+      height: 90
+      id: '1757724756768'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            json_schema: ''
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.5-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: d3fa576f-7938-4e95-b892-0347f25a260e
+          role: system
+          text: 請求書の内容を抽出してください
+        selected: true
+        structured_output:
+          schema:
+            properties:
+              invoiceDateTime:
+                format: date-time
+                type: string
+              lineItems:
+                items:
+                  properties:
+                    itemName:
+                      type: string
+                    itemTotal:
+                      minimum: 0
+                      type: number
+                    quantity:
+                      minimum: 0
+                      type: number
+                    unitPrice:
+                      minimum: 0
+                      type: number
+                  required:
+                  - itemName
+                  - unitPrice
+                  - quantity
+                  - itemTotal
+                  type: object
+                type: array
+              totalAmount:
+                minimum: 0
+                type: number
+            required:
+            - invoiceDateTime
+            - totalAmount
+            - lineItems
+            type: object
+        structured_output_enabled: true
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1757724756768'
+            - file
+          enabled: true
+      height: 90
+      id: '1757724797760'
+      position:
+        x: 408
+        y: 282
+      positionAbsolute:
+        x: 408
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1757724797760'
+          - structured_output
+          value_type: object
+          variable: structured_output
+        selected: false
+        title: 終了
+        type: end
+      height: 90
+      id: '1757724966912'
+      position:
+        x: 728
+        y: 282
+      positionAbsolute:
+        x: 728
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 110.93926558365177
+      y: 107.32405498194487
+      zoom: 0.7578582832551991
